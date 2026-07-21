@@ -1,0 +1,642 @@
+[
+  {
+    "id": 1,
+    "word": "apero"
+  },
+  {
+    "id": 2,
+    "word": "apaga"
+  },
+  {
+    "id": 3,
+    "word": "amaca"
+  },
+  {
+    "id": 4,
+    "word": "argel"
+  },
+  {
+    "id": 5,
+    "word": "asado"
+  },
+  {
+    "id": 6,
+    "word": "aijue"
+  },
+  {
+    "id": 7,
+    "word": "amigo"
+  },
+  {
+    "id": 8,
+    "word": "amuro"
+  },
+  {
+    "id": 9,
+    "word": "araca"
+  },
+  {
+    "id": 10,
+    "word": "apero"
+  },
+  {
+    "id": 11,
+    "word": "bachi"
+  },
+  {
+    "id": 12,
+    "word": "bendi"
+  },
+  {
+    "id": 13,
+    "word": "biaba"
+  },
+  {
+    "id": 14,
+    "word": "bocha"
+  },
+  {
+    "id": 15,
+    "word": "boloh"
+  },
+  {
+    "id": 16,
+    "word": "bondi"
+  },
+  {
+    "id": 17,
+    "word": "boton"
+  },
+  {
+    "id": 18,
+    "word": "burra"
+  },
+  {
+    "id": 19,
+    "word": "burro"
+  },
+  {
+    "id": 20,
+    "word": "bagre"
+  },
+  {
+    "id": 21,
+    "word": "bajon"
+  },
+  {
+    "id": 22,
+    "word": "balin"
+  },
+  {
+    "id": 23,
+    "word": "bambi"
+  },
+  {
+    "id": 24,
+    "word": "bardo"
+  },
+  {
+    "id": 25,
+    "word": "bicho"
+  },
+  {
+    "id": 26,
+    "word": "bidet"
+  },
+  {
+    "id": 27,
+    "word": "birra"
+  },
+  {
+    "id": 28,
+    "word": "bocho"
+  },
+  {
+    "id": 29,
+    "word": "bocon"
+  },
+  {
+    "id": 30,
+    "word": "bokee"
+  },
+  {
+    "id": 31,
+    "word": "bomba"
+  },
+  {
+    "id": 32,
+    "word": "bosta"
+  },
+  {
+    "id": 33,
+    "word": "bover"
+  },
+  {
+    "id": 34,
+    "word": "burro"
+  },
+  {
+    "id": 35,
+    "word": "burra"
+  },
+  {
+    "id": 36,
+    "word": "cabio"
+  },
+  {
+    "id": 37,
+    "word": "cacho"
+  },
+  {
+    "id": 38,
+    "word": "cagon"
+  },
+  {
+    "id": 39,
+    "word": "ceibo"
+  },
+  {
+    "id": 40,
+    "word": "cebar"
+  },
+  {
+    "id": 41,
+    "word": "chaco"
+  },
+  {
+    "id": 42,
+    "word": "chapa"
+  },
+  {
+    "id": 43,
+    "word": "chata"
+  },
+  {
+    "id": 44,
+    "word": "chele"
+  },
+  {
+    "id": 45,
+    "word": "cheto"
+  },
+  {
+    "id": 46,
+    "word": "chivo"
+  },
+  {
+    "id": 47,
+    "word": "choto"
+  },
+  {
+    "id": 48,
+    "word": "chota"
+  },
+  {
+    "id": 49,
+    "word": "coima"
+  },
+  {
+    "id": 50,
+    "word": "coscu"
+  },
+  {
+    "id": 51,
+    "word": "crack"
+  },
+  {
+    "id": 52,
+    "word": "croto"
+  },
+  {
+    "id": 53,
+    "word": "darin"
+  },
+  {
+    "id": 54,
+    "word": "deaaa"
+  },
+  {
+    "id": 55,
+    "word": "denso"
+  },
+  {
+    "id": 56,
+    "word": "facho"
+  },
+  {
+    "id": 57,
+    "word": "facto"
+  },
+  {
+    "id": 58,
+    "word": "fajar"
+  },
+  {
+    "id": 59,
+    "word": "fiaca"
+  },
+  {
+    "id": 60,
+    "word": "fiero"
+  },
+  {
+    "id": 61,
+    "word": "fiera"
+  },
+  {
+    "id": 62,
+    "word": "finde"
+  },
+  {
+    "id": 63,
+    "word": "flaco"
+  },
+  {
+    "id": 64,
+    "word": "forro"
+  },
+  {
+    "id": 65,
+    "word": "fulbo"
+  },
+  {
+    "id": 66,
+    "word": "garca"
+  },
+  {
+    "id": 67,
+    "word": "garpa"
+  },
+  {
+    "id": 68,
+    "word": "govir"
+  },
+  {
+    "id": 69,
+    "word": "gordi"
+  },
+  {
+    "id": 70,
+    "word": "gorra"
+  },
+  {
+    "id": 71,
+    "word": "grone"
+  },
+  {
+    "id": 72,
+    "word": "groso"
+  },
+  {
+    "id": 73,
+    "word": "guaso"
+  },
+  {
+    "id": 74,
+    "word": "guita"
+  },
+  {
+    "id": 75,
+    "word": "holis"
+  },
+  {
+    "id": 76,
+    "word": "jenny"
+  },
+  {
+    "id": 77,
+    "word": "jermu"
+  },
+  {
+    "id": 78,
+    "word": "kevin"
+  },
+  {
+    "id": 79,
+    "word": "lacra"
+  },
+  {
+    "id": 80,
+    "word": "lanus"
+  },
+  {
+    "id": 81,
+    "word": "lcdtm"
+  },
+  {
+    "id": 82,
+    "word": "lerdo"
+  },
+  {
+    "id": 83,
+    "word": "ligar"
+  },
+  {
+    "id": 84,
+    "word": "locro"
+  },
+  {
+    "id": 85,
+    "word": "lompa"
+  },
+  {
+    "id": 86,
+    "word": "maaal"
+  },
+  {
+    "id": 87,
+    "word": "macri"
+  },
+  {
+    "id": 88,
+    "word": "mambo"
+  },
+  {
+    "id": 89,
+    "word": "mango"
+  },
+  {
+    "id": 90,
+    "word": "manso"
+  },
+  {
+    "id": 91,
+    "word": "massa"
+  },
+  {
+    "id": 92,
+    "word": "mecha"
+  },
+  {
+    "id": 93,
+    "word": "menem"
+  },
+  {
+    "id": 94,
+    "word": "merca"
+  },
+  {
+    "id": 95,
+    "word": "messi"
+  },
+  {
+    "id": 96,
+    "word": "michi"
+  },
+  {
+    "id": 97,
+    "word": "milei"
+  },
+  {
+    "id": 98,
+    "word": "moron"
+  },
+  {
+    "id": 99,
+    "word": "nafta"
+  },
+  {
+    "id": 100,
+    "word": "napia"
+  },
+  {
+    "id": 101,
+    "word": "nashe"
+  },
+  {
+    "id": 102,
+    "word": "naupa"
+  },
+  {
+    "id": 103,
+    "word": "negro"
+  },
+  {
+    "id": 104,
+    "word": "nunez"
+  },
+  {
+    "id": 105,
+    "word": "noqui"
+  },
+  {
+    "id": 106,
+    "word": "ocote"
+  },
+  {
+    "id": 107,
+    "word": "ojota"
+  },
+  {
+    "id": 108,
+    "word": "ojete"
+  },
+  {
+    "id": 109,
+    "word": "pajin"
+  },
+  {
+    "id": 110,
+    "word": "peron"
+  },
+  {
+    "id": 111,
+    "word": "pingo"
+  },
+  {
+    "id": 112,
+    "word": "pinga"
+  },
+  {
+    "id": 113,
+    "word": "pinta"
+  },
+  {
+    "id": 114,
+    "word": "piola"
+  },
+  {
+    "id": 115,
+    "word": "plata"
+  },
+  {
+    "id": 116,
+    "word": "plomo"
+  },
+  {
+    "id": 117,
+    "word": "pocho"
+  },
+  {
+    "id": 118,
+    "word": "pollo"
+  },
+  {
+    "id": 119,
+    "word": "porfi"
+  },
+  {
+    "id": 120,
+    "word": "porro"
+  },
+  {
+    "id": 121,
+    "word": "posta"
+  },
+  {
+    "id": 122,
+    "word": "pucho"
+  },
+  {
+    "id": 123,
+    "word": "rajar"
+  },
+  {
+    "id": 124,
+    "word": "river"
+  },
+  {
+    "id": 125,
+    "word": "riber"
+  },
+  {
+    "id": 126,
+    "word": "rocha"
+  },
+  {
+    "id": 127,
+    "word": "rosas"
+  },
+  {
+    "id": 128,
+    "word": "rosca"
+  },
+  {
+    "id": 129,
+    "word": "saque"
+  },
+  {
+    "id": 130,
+    "word": "safar"
+  },
+  {
+    "id": 131,
+    "word": "salta"
+  },
+  {
+    "id": 132,
+    "word": "skere"
+  },
+  {
+    "id": 133,
+    "word": "tacho"
+  },
+  {
+    "id": 134,
+    "word": "tanga"
+  },
+  {
+    "id": 135,
+    "word": "temon"
+  },
+  {
+    "id": 136,
+    "word": "tibio"
+  },
+  {
+    "id": 137,
+    "word": "timba"
+  },
+  {
+    "id": 138,
+    "word": "toque"
+  },
+  {
+    "id": 139,
+    "word": "torta"
+  },
+  {
+    "id": 140,
+    "word": "tosco"
+  },
+  {
+    "id": 141,
+    "word": "traba"
+  },
+  {
+    "id": 142,
+    "word": "trola"
+  },
+  {
+    "id": 143,
+    "word": "truco"
+  },
+  {
+    "id": 144,
+    "word": "tigre"
+  },
+  {
+    "id": 145,
+    "word": "turra"
+  },
+  {
+    "id": 146,
+    "word": "upite"
+  },
+  {
+    "id": 147,
+    "word": "velez"
+  },
+  {
+    "id": 148,
+    "word": "verde"
+  },
+  {
+    "id": 149,
+    "word": "vicio"
+  },
+  {
+    "id": 150,
+    "word": "viejo"
+  },
+  {
+    "id": 151,
+    "word": "vieja"
+  },
+  {
+    "id": 152,
+    "word": "virgo"
+  },
+  {
+    "id": 153,
+    "word": "wacha"
+  },
+  {
+    "id": 154,
+    "word": "wacho"
+  },
+  {
+    "id": 155,
+    "word": "waska"
+  },
+  {
+    "id": 156,
+    "word": "yegua"
+  },
+  {
+    "id": 157,
+    "word": "yerba"
+  },
+  {
+    "id": 158,
+    "word": "zafar"
+  },
+  {
+    "id": 159,
+    "word": "zapas"
+  },
+  {
+    "id": 160,
+    "word": "zurdo"
+  }
+]

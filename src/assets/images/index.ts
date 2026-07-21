@@ -1,0 +1,10 @@
+export { default as Estrella_1 } from './1estrella.png';
+export { default as Estrella_2 } from './2estrellas.png';
+export { default as Estrella_3 } from './3estrellas.png';
+export { default as Bandera } from './bandera.png';
+export { default as Capibara } from './capibara.png';
+export { default as Falcon } from './falcon.png';
+export { default as Mafia } from './mafia.png';
+export { default as Maradona } from './maradona.png';
+export { default as Mate } from './mate.png';
+export { default as Messi } from './messi.png';

@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Manrope:wght@200..800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --font-Lato: 'Lato';
+}
+@theme {
+  --font-Manrope: 'Manrope';
+}
+
+body {
+  background-color: #1f1f1f;
+  height: 100svh;
+  background: radial-gradient(
+      circle at top left,
+      rgb(31 44 50),
+      transparent 40%
+    ),
+    radial-gradient(circle at bottom right, rgb(31 44 50), #1f1f1f 40%);
+  background-repeat: no-repeat;
+}
+
+#welcome {
+  background-color: #1f1f1f;
+  height: 100svh;
+  background: radial-gradient(
+      circle at top left,
+      rgb(31 44 50),
+      transparent 40%
+    ),
+    radial-gradient(circle at bottom right, rgb(31 44 50), #1f1f1f 40%);
+  background-repeat: no-repeat;
+}
+
+@theme {
+  --animate-flip-green: flip-green 0.4s ease-in-out forwards;
+  @keyframes flip-green {
+    0% {
+      transform: rotateX(0deg);
+      background-color: #101010;
+      border: 1px solid #7a7a7a;
+    }
+    45% {
+      transform: rotateX(90deg);
+      background-color: #101010;
+      border: 1px solid #7a7a7a;
+    }
+    55% {
+      transform: rotateX(90deg);
+      background-color: #43a047;
+      border: none;
+    }
+    100% {
+      transform: rotateX(0deg);
+      background-color: #43a047;
+      border: none;
+    }
+  }
+  --animate-flip-yellow: flip-yellow 0.4s ease-in-out forwards;
+  @keyframes flip-yellow {
+    0% {
+      transform: rotateX(0deg);
+      background-color: #101010;
+      border: 1px solid #7a7a7a;
+    }
+    45% {
+      transform: rotateX(90deg);
+      background-color: #101010;
+      border: 1px solid #7a7a7a;
+    }
+    55% {
+      transform: rotateX(90deg);
+      background-color: #e4a81d;
+      border: none;
+    }
+    100% {
+      transform: rotateX(0deg);
+      background-color: #e4a81d;
+      border: none;
+    }
+  }
+  --animate-flip-gray: flip-gray 0.4s ease-in-out forwards;
+  @keyframes flip-gray {
+    0% {
+      transform: rotateX(0deg);
+      background-color: #101010;
+    }
+    45% {
+      transform: rotateX(90deg);
+      background-color: #101010;
+    }
+    55% {
+      transform: rotateX(90deg);
+      background-color: #4c4c4c;
+    }
+    100% {
+      transform: rotateX(0deg);
+      background-color: #4c4c4c;
+    }
+  }
+}
+@theme {
+  --animate-popIn: popIn 0.1s ease-in-out;
+  @keyframes popIn {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+@theme {
+  --animate-click: click 0.1s ease-in-out;
+  @keyframes click {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.9);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+@theme {
+  --animate-shake: shake 0.4s ease-in-out;
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-8px);
+    }
+    40% {
+      transform: translateX(8px);
+    }
+    60% {
+      transform: translateX(-8px);
+    }
+    80% {
+      transform: translateX(8px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+}
+
+@theme {
+  --animate-openMenu: openMenu 0.3s ease-in-out;
+  @keyframes openMenu {
+    0% {
+      display: absolute;
+      left: -20rem;
+    }
+    100% {
+      left: 0;
+    }
+  }
+}
+@theme {
+  --animate-closeMenu: closeMenu forwards 0.3s ease-in-out;
+  @keyframes closeMenu {
+    0% {
+      display: absolute;
+      left: 0;
+    }
+    100% {
+      left: -20rem;
+    }
+  }
+}
+@theme {
+  --animate-menuIcon-open: menuIcon 0.5s ease-in-out forwards;
+  --animate-menuIcon-close: menuIcon 0.5s ease-in-out forwards reverse;
+  @keyframes menuIcon {
+    0% {
+      opacity: 0;
+      transform: rotate(180deg);
+    }
+    100% {
+      opacity: 1;
+      transform: rotate(360deg);
+    }
+  }
+}

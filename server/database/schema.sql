@@ -1,0 +1,30 @@
+CREATE DATABASE IF NOT EXISTS boludez
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE boludez;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  username VARCHAR(45) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_users_username (username)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS stats (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  user_id INT UNSIGNED NOT NULL,
+  game_mode ENUM('normal', 'hard', 'easy') NOT NULL,
+  played INT UNSIGNED NOT NULL DEFAULT 0,
+  wins INT UNSIGNED NOT NULL DEFAULT 0,
+  current_streak INT UNSIGNED NOT NULL DEFAULT 0,
+  best_streak INT UNSIGNED NOT NULL DEFAULT 0,
+  distribution JSON NOT NULL,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY uq_stats_user_mode (user_id, game_mode),
+  CONSTRAINT fk_stats_user
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;

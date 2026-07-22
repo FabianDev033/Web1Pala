@@ -6,3 +6,4 @@ export { default as Modal } from './Modal';
 export { default as Header } from './Header';
 export { default as Menu } from './Menu';
 export { default as Welcome } from './Welcome';
+export {default as LogInModal } from './LogInModal'

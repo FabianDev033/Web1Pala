@@ -5,3 +5,4 @@ export { default as Menu } from './Menu.tsx';
 export { default as StatsIcon } from './StatsIcon.tsx';
 export { default as CloseMenu } from './CloseMenu.tsx';
 export { default as LeftArrow } from './LeftArrow.tsx';
+export { default as User} from "./User.tsx"

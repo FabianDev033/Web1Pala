@@ -1,13 +1,15 @@
-import { Menu, StatsIcon, LeftArrow } from '../icons/';
+import { Menu, StatsIcon, LeftArrow, User } from '../icons/';
 
 export default function Header({
   onModalOpen,
   setShowMenu,
   showMenu,
+  showLogIn
 }: {
   onModalOpen: () => void;
   setShowMenu: (value: boolean) => void;
   showMenu: boolean;
+  showLogIn: () => void;
 }) {
   function MenuSwitch() {
     setShowMenu(!showMenu);
@@ -23,12 +25,13 @@ export default function Header({
         )}
       </div>
 
-      <span className="font-Lato font-normal text-2xl sm:text-2xl md:text-3xl lg:text-[1.8rem] text-center">
+      <span className="font-Lato font-normal text-xl sm:text-2xl md:text-3xl lg:text-[1.8rem] text-center">
         LA BOLUDEZ DEL DIA
       </span>
 
-      <div onClick={onModalOpen}>
-        <StatsIcon className="cursor-pointer w-8 md:w-9 text-[#A2A1A0]" />
+      <div className='flex justify-center items-center gap-2 md:gap-5'>
+        <StatsIcon className="cursor-pointer w-8 md:w-9 text-[#A2A1A0]" onClick={onModalOpen} />
+        <User className='cursor-pointer w-5 md:w-6 text-[#A2A1A0]/70' onClick={showLogIn} />
       </div>
     </header>
   );

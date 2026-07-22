@@ -8,7 +8,7 @@ export default function Grid({
   invalidShake,
 }: {
   currentGuess: string;
-  guesses: any[];
+  guesses: ({ key: string; color: string }[] | null)[];
   turn: number;
   solution: string;
   invalidShake: boolean;

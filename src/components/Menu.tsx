@@ -11,7 +11,7 @@ import {
   Mate,
 } from '../assets/images';
 
-import { CloseMenu } from '../icons';
+import { CloseMenu, User } from '../icons';
 
 export default function Menu({
   onClose,
@@ -19,12 +19,16 @@ export default function Menu({
   isOpen,
   handleGameMode,
   gamemode,
+  user,
+  onAccountOpen,
 }: {
   onClose: () => void;
   onWelcomeOpen: () => void;
   isOpen: boolean;
   handleGameMode: (game: number) => void;
   gamemode: 'normal' | 'hard' | 'easy';
+  user: { username: string } | null;
+  onAccountOpen: () => void;
 }) {
   return (
     <nav
@@ -74,7 +78,22 @@ export default function Menu({
           La boludez del dia
         </span>
       </div>
-      <div className="mt-24 z-10 ">
+      <button
+        type="button"
+        onClick={onAccountOpen}
+        className="z-10 mt-8 flex w-full items-center gap-3 rounded-lg border border-stone-700/80 bg-stone-900/60 px-4 py-3 text-left transition hover:border-stone-500"
+      >
+        <User className="w-6 text-stone-300" />
+        <span className="min-w-0">
+          <span className="block truncate font-Lato text-lg text-stone-50">
+            {user?.username ?? 'Invitado'}
+          </span>
+          <span className="block text-sm text-stone-400">
+            {user ? 'Cuenta conectada' : 'Iniciar sesión'}
+          </span>
+        </span>
+      </button>
+      <div className="mt-12 z-10 ">
         <span className="font-Lato text-lg text-stone-300 cursor-default">
           Modos de juego
         </span>

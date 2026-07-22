@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+# La pala del día
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Juego React/Vite con una API Node + Express para registrar usuarios y conservar sus estadísticas en MySQL.
 
-Currently, two official plugins are available:
+## Puesta en marcha
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Copiá `.env.example` a `.env` y completá la contraseña de MySQL y un `JWT_SECRET` largo y aleatorio.
+2. Creá las tablas nuevas con `mysql -u root -p < server/database/schema.sql`.
+3. En una terminal ejecutá `pnpm dev:api` y en otra `pnpm dev`.
 
-## React Compiler
+La base indicada en `boludez.sql` no admite hashes bcrypt ni distribuciones de intentos: usá `server/database/schema.sql` para crear el esquema actualizado. Si ya cargaste ese dump, recreá esa base antes de importar el nuevo esquema.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Endpoints
 
-## Expanding the ESLint configuration
+Todas las rutas reciben y responden JSON. Las rutas de estadísticas requieren el encabezado `Authorization: Bearer <token>` y sólo permiten acceder al usuario incluido en ese token.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+| Método | Ruta | Cuerpo / resultado |
+| --- | --- | --- |
+| `GET` | `/api/health` | Comprueba conexión con MySQL. |
+| `POST` | `/api/auth/register` | `{ "username", "password" }`; crea el usuario, genera su hash y devuelve `{ user, token }`. |
+| `POST` | `/api/auth/login` | `{ "username", "password" }`; devuelve `{ user, token }`. |
+| `GET` | `/api/users/:userId/stats?mode=normal` | Devuelve las estadísticas del usuario y modo (`normal`, `hard` o `easy`). |
+| `PUT` | `/api/users/:userId/stats` | Guarda el estado completo de un modo; inserta o actualiza el registro. |
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Ejemplo del cuerpo del `PUT`:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```json
+{
+  "gameMode": "normal",
+  "stats": {
+    "played": 8,
+    "wins": 5,
+    "currentStreak": 2,
+    "bestStreak": 3,
+    "distribution": [0, 1, 2, 1, 1, 0]
+  }
+}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Integración del cliente
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+`src/services/api.ts` expone `register(username, password)` y `login(username, password)`. Ambas guardan el token y el usuario en `localStorage` mediante `src/utils/auth.ts`; conectalas a los campos de registro/inicio de sesión de la interfaz cuando los agregues.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Al existir esa sesión, `useStats` trae las estadísticas de la base al cargar cada modo y ejecuta el `PUT` automáticamente después de una victoria o derrota. Sin sesión o sin API disponible mantiene el comportamiento local actual.

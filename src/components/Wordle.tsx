@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import useWordle from '../hooks/useWordle';
-import { Grid, Keypad, Modal, Header, Menu, Welcome } from '.';
+import { Grid, Keypad, Modal, Header, Menu, Welcome, LogInModal } from '.';
 import { useStats } from '../hooks/useStats';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useGameState } from '../hooks/useGameState';
+import { useAuthSession } from '../hooks/useAuthSession';
 import { CheckStats } from '../utils/checkStats';
 
 export default function Wordle({
@@ -28,7 +29,9 @@ export default function Wordle({
   } = useWordle(solution, gamemode);
   const { stats, registerLoss, registerWin } = useStats(gamemode);
   const { gameState, updateGameState, loadGameState } = useGameState(gamemode);
+  const session = useAuthSession();
   const [showModal, setShowModal] = useState(false);
+  const [showLogIn, setShowLogIn] = useState(false);
   const hasRegistered = useRef(false);
   const [showMenu, setShowMenu] = useState(() =>
     typeof window !== 'undefined'
@@ -53,28 +56,36 @@ export default function Wordle({
     hasRegistered.current = false;
   }, [solution]);
 
-  let state = gameState;
-
   useEffect(() => {
-    state = loadGameState(gamemode);
-    if (gameState.gameCompleted) return;
+    const storedState = loadGameState(gamemode);
+    if (storedState.gameCompleted || hasRegistered.current) return;
 
     if (isCorrect) {
+      hasRegistered.current = true;
       registerWin(turn);
-      state.gameCompleted = true;
-      updateGameState(state);
+      updateGameState((previous) => ({ ...previous, gameCompleted: true }));
 
-      setTimeout(() => setShowModal(true), 2000);
-      return;
+      const timeout = setTimeout(() => setShowModal(true), 2000);
+      return () => clearTimeout(timeout);
     }
 
     if (turn > 5) {
+      hasRegistered.current = true;
       registerLoss();
-      state.gameCompleted = true;
-      updateGameState(state);
-      setTimeout(() => setShowModal(true), 2000);
+      updateGameState((previous) => ({ ...previous, gameCompleted: true }));
+      const timeout = setTimeout(() => setShowModal(true), 2000);
+      return () => clearTimeout(timeout);
     }
-  }, [isCorrect, turn, registerWin, registerLoss, gameState]);
+  }, [
+    gamemode,
+    gameState,
+    isCorrect,
+    loadGameState,
+    registerLoss,
+    registerWin,
+    turn,
+    updateGameState,
+  ]);
 
   const played = CheckStats();
   useEffect(() => {
@@ -135,6 +146,7 @@ export default function Wordle({
           onModalOpen={() => setShowModal(true)}
           setShowMenu={setShowMenu}
           showMenu={showMenu}
+          showLogIn={() => setShowLogIn(true)}
         />
       </div>
       <div className="h-[90%] w-11/12 flex flex-col items-center justify-center gap-10">
@@ -161,12 +173,20 @@ export default function Wordle({
           onClose={() => setShowModal(false)}
         />
       )}
+      {showLogIn &&(
+        <LogInModal onClose={() => setShowLogIn(false)} session={session} />
+      )}
       <Menu
         isOpen={showMenu}
         onClose={() => setShowMenu(false)}
         onWelcomeOpen={() => setShowWelcome(true)}
         handleGameMode={handleGameMode}
         gamemode={gamemode}
+        user={session?.user ?? null}
+        onAccountOpen={() => {
+          setShowMenu(false);
+          setShowLogIn(true);
+        }}
       />
       <ToastContainer />
     </div>

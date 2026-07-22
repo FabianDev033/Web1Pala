@@ -1,3 +1,5 @@
+import type { Stats } from '../types/stats';
+
 export function loadStats(key: string) {
   const json = localStorage.getItem(key);
 
@@ -14,6 +16,6 @@ export function loadStats(key: string) {
   return JSON.parse(json);
 }
 
-export function saveStats(key: string, stats: any) {
+export function saveStats(key: string, stats: Stats) {
   localStorage.setItem(key, JSON.stringify(stats));
 }

@@ -15,7 +15,7 @@ export function loadGameState(gamemode: 'normal' | 'hard' | 'easy') {
   return JSON.parse(json);
 }
 
-export function saveGameState(gamemode: string, state: any) {
+export function saveGameState(gamemode: string, state: unknown) {
   localStorage.setItem(`game-${gamemode}`, JSON.stringify(state));
 }
 

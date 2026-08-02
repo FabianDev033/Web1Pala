@@ -105,80 +105,18 @@ Toda la interfaz fue diseñada utilizando Tailwind CSS con un enfoque **Mobile F
 
 ---
 
-## ⚙️ Instalación
-
-### Clonar el repositorio
-
-```bash
-git clone https://github.com/usuario/proyecto.git
-```
-
-### Frontend
-
-```bash
-cd client
-npm install
-npm run dev
-```
-
-### Backend
-
-```bash
-cd api
-npm install
-npm run dev
-```
-
----
-
-## Variables de entorno
-
-### Frontend
-
-```env
-VITE_API_URL=http://localhost:3000
-```
-
-### Backend
-
-```env
-PORT=3000
-
-DB_HOST=localhost
-DB_PORT=3306
-DB_NAME=nombre_db
-DB_USER=root
-DB_PASSWORD=password
-
-JWT_SECRET=tu_clave_secreta
-```
-
----
-
 ## Objetivos del proyecto
 
 Este proyecto fue desarrollado con el propósito de aplicar conceptos de desarrollo Full Stack, incluyendo:
 
 * Desarrollo de APIs REST.
-* Arquitectura Cliente - Servidor.
+* Arquitectura MVC.
 * Manejo de autenticación segura.
 * Persistencia de sesiones.
 * Diseño responsive.
 * Comunicación entre frontend y backend.
 * Manejo de bases de datos relacionales.
 * Organización modular del código.
-
----
-
-## Mejoras futuras
-
-* Ranking global de jugadores.
-* Recuperación de contraseña.
-* Panel de administración.
-* Modo multijugador.
-* Desafíos entre usuarios.
-* Estadísticas globales.
-* Internacionalización.
 
 ---
 

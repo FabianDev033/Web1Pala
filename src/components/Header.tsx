@@ -26,7 +26,7 @@ export default function Header({
       </div>
 
       <span className="font-Lato font-normal text-xl sm:text-2xl md:text-3xl lg:text-[1.8rem] text-center">
-        LA BOLUDEZ DEL DIA
+        LA PALABRA DEL DIA
       </span>
 
       <div className='flex justify-center items-center gap-2 md:gap-5'>

@@ -75,7 +75,7 @@ export default function Menu({
       </div>
       <div className="w-full flex justify-center ">
         <span className="font-Lato text-2xl text-stone-50">
-          La boludez del dia
+          La palabra del dia
         </span>
       </div>
       <button

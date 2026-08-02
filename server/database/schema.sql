@@ -28,3 +28,24 @@ CREATE TABLE IF NOT EXISTS stats (
   CONSTRAINT fk_stats_user
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS daily_solutions (
+  solution_date DATE NOT NULL,
+  normal_solution_id INT UNSIGNED NOT NULL,
+  hard_solution_id INT UNSIGNED NOT NULL,
+  easy_solution_id INT UNSIGNED NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (solution_date)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS daily_game_results (
+  user_id INT UNSIGNED NOT NULL,
+  game_date DATE NOT NULL,
+  game_mode ENUM('normal', 'hard', 'easy') NOT NULL,
+  result ENUM('win', 'loss') NOT NULL,
+  tries TINYINT UNSIGNED NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, game_date, game_mode),
+  CONSTRAINT fk_daily_game_results_user
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB;

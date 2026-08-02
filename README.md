@@ -21,6 +21,8 @@ Todas las rutas reciben y responden JSON. Las rutas de estadísticas requieren e
 | `POST` | `/api/auth/login` | `{ "username", "password" }`; devuelve `{ user, token }`. |
 | `GET` | `/api/users/:userId/stats?mode=normal` | Devuelve las estadísticas del usuario y modo (`normal`, `hard` o `easy`). |
 | `PUT` | `/api/users/:userId/stats` | Guarda el estado completo de un modo; inserta o actualiza el registro. |
+| `GET` | `/api/daily-solutions?date=YYYY-MM-DD` | Devuelve las soluciones de la fecha si ya fueron generadas. |
+| `POST` | `/api/daily-solutions` | Guarda las soluciones iniciales de la fecha y devuelve la definitiva. |
 
 Ejemplo del cuerpo del `PUT`:
 

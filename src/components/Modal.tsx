@@ -6,6 +6,7 @@ export default function Modal({
   onClose,
   isCorrect,
   turn,
+  showSolution = false,
 }: {
   solution: string;
   stats: {
@@ -18,6 +19,7 @@ export default function Modal({
   onClose: () => void;
   isCorrect: boolean;
   turn: number;
+  showSolution?: boolean;
 }) {
   const accuracy =
     stats.played > 0 ? Math.round((stats.wins / stats.played) * 100) : 0;
@@ -39,7 +41,7 @@ export default function Modal({
               onClose();
             }}
           />
-          {isCorrect || turn >= 5 ? (
+          {isCorrect || turn >= 5 || showSolution ? (
             <div className="flex flex-col items-center h-10 justify-center px-12">
               <span className="text-3xl md:text-4xl uppercase tracking-wide text-center">
                 {solution}

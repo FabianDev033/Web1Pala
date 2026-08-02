@@ -1,59 +1,86 @@
 import { useEffect, useState } from 'react';
 import { SOLUTIONS, SOLUTIONS_EASY, SOLUTIONS_HARD } from '../data';
+import { createDailySolution, fetchDailySolution } from '../services/api';
+
+type Solution = { id: number; word: string; description: string };
+
+function getTodayKey() {
+  const today = new Date();
+  return [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, '0'),
+    String(today.getDate()).padStart(2, '0'),
+  ].join('-');
+}
+
+function randomSolution(solutions: Solution[]) {
+  return solutions[Math.floor(Math.random() * solutions.length)];
+}
+
+function findSolution(solutions: Solution[], id: number) {
+  const solution = solutions.find((item) => item.id === id);
+  if (!solution) throw new Error('La solución diaria guardada no existe.');
+  return solution;
+}
+
 export function useDailySolution() {
   const [solutionNormal, setSolutionNormal] = useState<string | null>(null);
   const [solutionHard, setSolutionHard] = useState<string | null>(null);
   const [solutionEasy, setSolutionEasy] = useState<string | null>(null);
-
-  const [descriptionNormal, setDescriptionNormal] = useState<string | null>(
-    null
-  );
+  const [descriptionNormal, setDescriptionNormal] = useState<string | null>(null);
   const [descriptionHard, setDescriptionHard] = useState<string | null>(null);
   const [descriptionEasy, setDescriptionEasy] = useState<string | null>(null);
 
-  function getTodayKey() {
-    const today = new Date();
-    return today.toISOString().split('T')[0];
-  }
-
   useEffect(() => {
-    const today = getTodayKey();
-    const stored = localStorage.getItem('daily-solution');
+    let cancelled = false;
+    const date = getTodayKey();
 
-    if (stored) {
-      const data = JSON.parse(stored);
-      if (data.date === today) {
-        setSolutionNormal(SOLUTIONS[data.solution_normal].word);
-        setDescriptionNormal(SOLUTIONS[data.solution_normal].description);
-        setSolutionHard(SOLUTIONS_HARD[data.solution_hard].word);
-        setDescriptionHard(SOLUTIONS_HARD[data.solution_hard].description);
-        setSolutionEasy(SOLUTIONS_EASY[data.solution_easy].word);
-        setDescriptionEasy(SOLUTIONS_EASY[data.solution_easy].description);
-        return;
-      }
-    }
-    const newSolution_NORMAL =
-      SOLUTIONS[Math.floor(Math.random() * SOLUTIONS.length)];
-    const newSolution_EASY =
-      SOLUTIONS_EASY[Math.floor(Math.random() * SOLUTIONS_EASY.length)];
-    const newSolution_HARD =
-      SOLUTIONS_HARD[Math.floor(Math.random() * SOLUTIONS_HARD.length)];
+    const applySolution = (ids: { normal: number; hard: number; easy: number }) => {
+      const normal = findSolution(SOLUTIONS, ids.normal);
+      const hard = findSolution(SOLUTIONS_HARD, ids.hard);
+      const easy = findSolution(SOLUTIONS_EASY, ids.easy);
 
-    const newData = {
-      solution_normal: newSolution_NORMAL.id,
-      solution_hard: newSolution_HARD.id,
-      solution_easy: newSolution_EASY.id,
-      date: today,
+      if (cancelled) return;
+      setSolutionNormal(normal.word);
+      setDescriptionNormal(normal.description);
+      setSolutionHard(hard.word);
+      setDescriptionHard(hard.description);
+      setSolutionEasy(easy.word);
+      setDescriptionEasy(easy.description);
     };
 
-    localStorage.setItem('daily-solution', JSON.stringify(newData));
-    setSolutionNormal(newSolution_NORMAL.word);
-    setSolutionHard(newSolution_HARD.word);
-    setSolutionEasy(newSolution_EASY.word);
-    setDescriptionNormal(newSolution_NORMAL.description);
-    setDescriptionHard(newSolution_HARD.description);
-    setDescriptionEasy(newSolution_EASY.description);
-  }, [SOLUTIONS]);
+    void (async () => {
+      try {
+        let dailySolution = await fetchDailySolution(date);
+        if (!dailySolution) {
+          dailySolution = await createDailySolution(date, {
+            normal: randomSolution(SOLUTIONS).id,
+            hard: randomSolution(SOLUTIONS_HARD).id,
+            easy: randomSolution(SOLUTIONS_EASY).id,
+          });
+        }
+        applySolution(dailySolution.solutions);
+      } catch {
+        // Mantiene el juego utilizable si la API no está disponible.
+        const fallback = {
+          normal: randomSolution(SOLUTIONS),
+          hard: randomSolution(SOLUTIONS_HARD),
+          easy: randomSolution(SOLUTIONS_EASY),
+        };
+        if (cancelled) return;
+        setSolutionNormal(fallback.normal.word);
+        setDescriptionNormal(fallback.normal.description);
+        setSolutionHard(fallback.hard.word);
+        setDescriptionHard(fallback.hard.description);
+        setSolutionEasy(fallback.easy.word);
+        setDescriptionEasy(fallback.easy.description);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return {
     solutionNormal,

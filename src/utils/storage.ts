@@ -1,16 +1,20 @@
 import type { Stats } from '../types/stats';
 
+export function createEmptyStats(): Stats {
+  return {
+    played: 0,
+    wins: 0,
+    currentStreak: 0,
+    bestStreak: 0,
+    distribution: [0, 0, 0, 0, 0, 0],
+  };
+}
+
 export function loadStats(key: string) {
   const json = localStorage.getItem(key);
 
   if (!json) {
-    return {
-      played: 0,
-      wins: 0,
-      currentStreak: 0,
-      bestStreak: 0,
-      distribution: [0, 0, 0, 0, 0, 0],
-    };
+    return createEmptyStats();
   }
 
   return JSON.parse(json);

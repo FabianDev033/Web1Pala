@@ -7,6 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useGameState } from '../hooks/useGameState';
 import { useAuthSession } from '../hooks/useAuthSession';
 import { CheckStats } from '../utils/checkStats';
+import { fetchDailyGame, fetchStats, saveDailyGame } from '../services/api';
+import { createEmptyStats, saveStats } from '../utils/storage';
+import { clearGameState } from '../utils/gameStorage';
 
 export default function Wordle({
   solution,
@@ -17,6 +20,7 @@ export default function Wordle({
   gamemode: 'normal' | 'hard' | 'easy';
   handleGameMode: (game: number) => void;
 }) {
+  const [isGameLocked, setIsGameLocked] = useState(false);
   const {
     currentGuess,
     handleKeyup,
@@ -26,10 +30,12 @@ export default function Wordle({
     usedKeys,
     invalidShake,
     errorKey,
-  } = useWordle(solution, gamemode);
-  const { stats, registerLoss, registerWin } = useStats(gamemode);
-  const { gameState, updateGameState, loadGameState } = useGameState(gamemode);
+    resetGame,
+  } = useWordle(solution, gamemode, isGameLocked);
+  const { stats, registerLoss, registerWin, resetStats, syncFromServer } = useStats(gamemode);
+  const { gameState, updateGameState, loadGameState, resetGameState } = useGameState(gamemode);
   const session = useAuthSession();
+  const previousUserId = useRef<number | null | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
   const [showLogIn, setShowLogIn] = useState(false);
   const hasRegistered = useRef(false);
@@ -41,6 +47,8 @@ export default function Wordle({
   const [showWelcome, setShowWelcome] = useState(false);
 
   useEffect(() => {
+    if (showLogIn) return;
+
     window.addEventListener('keyup', handleKeyup);
     if (isCorrect) {
       window.removeEventListener('keyup', handleKeyup);
@@ -50,7 +58,65 @@ export default function Wordle({
     }
 
     return () => window.removeEventListener('keyup', handleKeyup);
-  }, [handleKeyup, turn, isCorrect]);
+  }, [handleKeyup, turn, isCorrect, showLogIn]);
+
+  const syncAllStats = async () => {
+    await Promise.all(
+      (['normal', 'easy', 'hard'] as const).map(async (mode) => {
+        const remoteStats = await fetchStats(mode);
+        saveStats(`stats-${mode}`, remoteStats ?? createEmptyStats());
+      }),
+    );
+    await syncFromServer();
+  };
+
+  const resetAllStats = () => {
+    (['normal', 'easy', 'hard'] as const).forEach((mode) => {
+      saveStats(`stats-${mode}`, createEmptyStats());
+    });
+    resetStats();
+  };
+
+  useEffect(() => {
+    const currentUserId = session?.user.id ?? null;
+
+    if (previousUserId.current !== undefined && previousUserId.current !== currentUserId) {
+      (['normal', 'easy', 'hard'] as const).forEach(clearGameState);
+      hasRegistered.current = false;
+      setShowModal(false);
+      resetGame();
+      resetGameState(solution);
+    }
+
+    previousUserId.current = currentUserId;
+  }, [resetGame, resetGameState, session?.user.id, solution]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setIsGameLocked(false);
+
+    if (!session) return;
+
+    void fetchDailyGame(gamemode)
+      .then((dailyGame) => {
+        if (!dailyGame || cancelled) return;
+        setIsGameLocked(true);
+        setShowModal(true);
+        toast(
+          dailyGame.result === 'win'
+            ? 'Ya ganaste la partida de hoy.'
+            : 'Ya jugaste la partida de hoy.',
+          { position: 'top-center', autoClose: 2500, theme: 'dark', hideProgressBar: true },
+        );
+      })
+      .catch(() => {
+        // Sin conexión, se conserva el comportamiento local.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [gamemode, session]);
 
   useEffect(() => {
     hasRegistered.current = false;
@@ -63,6 +129,7 @@ export default function Wordle({
     if (isCorrect) {
       hasRegistered.current = true;
       registerWin(turn);
+      void saveDailyGame(gamemode, 'win', turn);
       updateGameState((previous) => ({ ...previous, gameCompleted: true }));
 
       const timeout = setTimeout(() => setShowModal(true), 2000);
@@ -72,6 +139,7 @@ export default function Wordle({
     if (turn > 5) {
       hasRegistered.current = true;
       registerLoss();
+      void saveDailyGame(gamemode, 'loss', null);
       updateGameState((previous) => ({ ...previous, gameCompleted: true }));
       const timeout = setTimeout(() => setShowModal(true), 2000);
       return () => clearTimeout(timeout);
@@ -171,10 +239,16 @@ export default function Wordle({
           solution={solution}
           stats={stats}
           onClose={() => setShowModal(false)}
+          showSolution={isGameLocked}
         />
       )}
       {showLogIn &&(
-        <LogInModal onClose={() => setShowLogIn(false)} session={session} />
+        <LogInModal
+          onClose={() => setShowLogIn(false)}
+          session={session}
+          onSync={syncAllStats}
+          onAccountCreated={resetAllStats}
+        />
       )}
       <Menu
         isOpen={showMenu}

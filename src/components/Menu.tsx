@@ -36,7 +36,7 @@ export default function Menu({
         isOpen ? 'animate-openMenu' : 'animate-closeMenu'
       }`}
     >
-      <div className="absolute bottom-0 right-0 z-0">
+      <div className="absolute bottom-0 right-0 -z-10">
         {gamemode === 'normal' ? (
           <div className=" ">
             <img src={Maradona} alt="" className="absolute bottom-0 z-0" />
@@ -81,7 +81,7 @@ export default function Menu({
       <button
         type="button"
         onClick={onAccountOpen}
-        className="z-10 mt-8 flex w-full items-center gap-3 rounded-lg border border-stone-700/80 bg-stone-900/60 px-4 py-3 text-left transition hover:border-stone-500"
+        className="z-10 mt-8 flex w-full items-center gap-3 rounded-lg border border-[#7A7A7A] bg-stone-900/60 px-4 py-3 text-left transition hover:border-[#1FC4E2]/50"
       >
         <User className="w-6 text-stone-300" />
         <span className="min-w-0">
@@ -106,9 +106,6 @@ export default function Menu({
               <img src={Estrella_1} alt="" className="w-8  absolute left-2" />
             ) : null}
             <span>Facil</span>
-            <span className="text-sm text-[#8C8B8A] relative -top-4 -rotate-12">
-              {gamemode === 'easy' ? 'modo botsito' : null}
-            </span>
           </li>
           <li
             className="mb-4 cursor-pointer flex items-center justify-between w-45"
@@ -118,9 +115,6 @@ export default function Menu({
               <img src={Estrella_2} alt="" className="w-8 absolute left-0" />
             ) : null}
             <span>Normal</span>
-            <span className="text-sm text-[#8C8B8A] relative -top-4 -rotate-12">
-              {gamemode === 'normal' ? 'modo messi' : null}
-            </span>
           </li>
           <li
             className="mb-4 cursor-pointer flex items-center justify-between w-50"
@@ -130,9 +124,6 @@ export default function Menu({
               <img src={Estrella_3} alt="" className="w-8 absolute left-0" />
             ) : null}
             <span>Dificil</span>
-            <span className="text-sm text-[#8C8B8A] relative -top-4 -rotate-12">
-              {gamemode === 'hard' ? 'modo chiqui mafia' : null}
-            </span>
           </li>
         </ul>
       </div>

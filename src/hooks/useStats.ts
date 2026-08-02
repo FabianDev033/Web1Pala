@@ -1,15 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { loadStats, saveStats } from '../utils/storage';
+import { createEmptyStats, loadStats, saveStats } from '../utils/storage';
 import type { Stats } from '../types/stats';
 import { fetchStats, syncStats } from '../services/api';
-import { useAuthSession } from './useAuthSession';
 
 export function useStats(gamemode: 'normal' | 'easy' | 'hard') {
   const STORAGE_KEY = `stats-${gamemode}`;
 
   const [stats, setStats] = useState<Stats>(() => loadStats(STORAGE_KEY));
   const statsRef = useRef(stats);
-  const session = useAuthSession();
 
   useEffect(() => {
     const localStats = loadStats(STORAGE_KEY);
@@ -21,25 +19,6 @@ export function useStats(gamemode: 'normal' | 'easy' | 'hard') {
     saveStats(STORAGE_KEY, stats);
     statsRef.current = stats;
   }, [STORAGE_KEY, stats]);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    void fetchStats(gamemode)
-      .then((remoteStats) => {
-        if (!remoteStats || cancelled) return;
-        statsRef.current = remoteStats;
-        saveStats(STORAGE_KEY, remoteStats);
-        setStats(remoteStats);
-      })
-      .catch(() => {
-        // Sin conexion, el juego sigue usando localStorage.
-      });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [STORAGE_KEY, gamemode, session?.user.id]);
 
   const applyStats = (update: (previous: Stats) => Stats) => {
     const next = update(statsRef.current);
@@ -74,5 +53,20 @@ export function useStats(gamemode: 'normal' | 'easy' | 'hard') {
     }));
   };
 
-  return { stats, registerWin, registerLoss };
+  const resetStats = () => {
+    const emptyStats = createEmptyStats();
+    statsRef.current = emptyStats;
+    saveStats(STORAGE_KEY, emptyStats);
+    setStats(emptyStats);
+  };
+
+  const syncFromServer = async () => {
+    const remoteStats = await fetchStats(gamemode);
+    const nextStats = remoteStats ?? createEmptyStats();
+    statsRef.current = nextStats;
+    saveStats(STORAGE_KEY, nextStats);
+    setStats(nextStats);
+  };
+
+  return { stats, registerWin, registerLoss, resetStats, syncFromServer };
 }

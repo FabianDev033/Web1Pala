@@ -6,21 +6,43 @@ import { clearSession, type AuthSession } from '../utils/auth';
 interface LoginModalProps {
   onClose: () => void;
   session: AuthSession | null;
+  onSync: () => Promise<void>;
+  onAccountCreated: () => void;
 }
 
-export default function LoginModal({ onClose, session }: LoginModalProps) {
+export default function LoginModal({ onClose, session, onSync, onAccountCreated }: LoginModalProps) {
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncMessage, setSyncMessage] = useState('');
 
   const switchMode = (nextMode: 'login' | 'register') => {
     setMode(nextMode);
     setError('');
     setPassword('');
     setPasswordConfirmation('');
+  };
+
+  const handleSync = async () => {
+    setIsSyncing(true);
+    setSyncMessage('');
+
+    try {
+      await onSync();
+      setSyncMessage('Estadísticas sincronizadas correctamente.');
+    } catch (requestError) {
+      setSyncMessage(
+        requestError instanceof Error
+          ? requestError.message
+          : 'No se pudieron sincronizar las estadísticas.',
+      );
+    } finally {
+      setIsSyncing(false);
+    }
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -46,6 +68,7 @@ export default function LoginModal({ onClose, session }: LoginModalProps) {
         await login(username.trim(), password);
       } else {
         await register(username.trim(), password);
+        onAccountCreated();
       }
       onClose();
     } catch (requestError) {
@@ -80,12 +103,28 @@ export default function LoginModal({ onClose, session }: LoginModalProps) {
             <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-full border border-zinc-700 bg-zinc-800">
               <User className="w-7 text-zinc-200" />
             </div>
-            <h2 id="account-title" className="text-2xl font-Lato text-white">
+            <h2 id="account-title" className="text-2xl font-Lato text-stone-50">
               {session.user.username}
             </h2>
-            <p className="mt-1 text-sm font-Manrope text-zinc-400">
-              Tus estadísticas se sincronizan al terminar cada partida.
-            </p>
+            <div className='w-full font-Manrope text-stone-50 font-normal flex flex-col gap-3 items-start mt-7'>
+              <p className='font-Lato'>Sincroniza tus datos!</p>
+              <button
+                type="button"
+                onClick={handleSync}
+                disabled={isSyncing}
+                className="w-full cursor-pointer rounded-lg border border-zinc-600 py-3 font-light text-zinc-100 transition hover:bg-zinc-800 disabled:cursor-wait disabled:opacity-60"
+              >
+                {isSyncing ? 'Sincronizando...' : 'Sincronizar'}
+              </button>
+              {syncMessage && (
+                <p
+                  role="status"
+                  className="text-sm text-zinc-300"
+                >
+                  {syncMessage}
+                </p>
+              )}
+            </div>
           </div>
           <button
             type="button"
@@ -93,7 +132,7 @@ export default function LoginModal({ onClose, session }: LoginModalProps) {
               clearSession();
               onClose();
             }}
-            className="mt-7 w-full cursor-pointer rounded-lg border border-zinc-600 py-3 font-semibold text-zinc-100 transition hover:bg-zinc-800"
+            className="mt-7 w-full cursor-pointer rounded-lg border border-zinc-600 py-3 font-light font-Manrope text-zinc-100 transition hover:bg-zinc-800"
           >
             Cerrar sesión
           </button>

@@ -3,7 +3,11 @@ import { VALID_GUESSES } from '../data';
 import { useGameState } from './useGameState';
 import type { GameState } from '../interfaces/types';
 
-const useWordle = (solution: string, gamemode: 'normal' | 'hard' | 'easy') => {
+const useWordle = (
+  solution: string,
+  gamemode: 'normal' | 'hard' | 'easy',
+  isGameLocked = false,
+) => {
   const length = solution ? solution.length : 0;
 
   const WORD_SET = useMemo(() => new Set(VALID_GUESSES), []);
@@ -106,7 +110,18 @@ const useWordle = (solution: string, gamemode: 'normal' | 'hard' | 'easy') => {
     });
   };
 
-  const handleKeyup = ({ key }: { key: string }) => {
+  const handleKeyup = ({ key, target }: { key: string; target?: EventTarget | null }) => {
+    if (
+      target instanceof HTMLElement &&
+      (target.tagName === 'INPUT' ||
+        target.tagName === 'TEXTAREA' ||
+        target.isContentEditable)
+    ) {
+      return;
+    }
+
+    if (isGameLocked) return;
+
     const state = gameStateRef.current;
     const guess = state.currentGuess;
 
@@ -165,6 +180,10 @@ const useWordle = (solution: string, gamemode: 'normal' | 'hard' | 'easy') => {
     }
   };
 
+  const resetGame = () => {
+    resetGameState(solution);
+  };
+
   return {
     turn,
     currentGuess,
@@ -176,6 +195,7 @@ const useWordle = (solution: string, gamemode: 'normal' | 'hard' | 'easy') => {
     invalidShake,
     errorKey,
     handleKeyup,
+    resetGame,
   };
 };
 

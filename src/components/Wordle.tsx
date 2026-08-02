@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useGameState } from '../hooks/useGameState';
 import { useAuthSession } from '../hooks/useAuthSession';
 import { CheckStats } from '../utils/checkStats';
-import { fetchDailyGame, fetchStats, saveDailyGame } from '../services/api';
+import { fetchDailyGame, fetchStats, saveDailyGame } from '../services/users';
 import { createEmptyStats, saveStats } from '../utils/storage';
 import { clearGameState } from '../utils/gameStorage';
 

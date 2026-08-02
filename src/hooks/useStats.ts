@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { createEmptyStats, loadStats, saveStats } from '../utils/storage';
 import type { Stats } from '../types/stats';
-import { fetchStats, syncStats } from '../services/api';
+import { fetchStats, syncStats } from '../services/users';
 
 export function useStats(gamemode: 'normal' | 'easy' | 'hard') {
   const STORAGE_KEY = `stats-${gamemode}`;

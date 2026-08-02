@@ -1,6 +1,6 @@
 import { type FormEvent, useState } from 'react';
 import { User, CloseMenu } from '../icons';
-import { login, register } from '../services/api';
+import { login, register } from '../services/auth';
 import { clearSession, type AuthSession } from '../utils/auth';
 
 interface LoginModalProps {

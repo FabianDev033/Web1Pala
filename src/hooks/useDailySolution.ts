@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SOLUTIONS, SOLUTIONS_EASY, SOLUTIONS_HARD } from '../data';
-import { createDailySolution, fetchDailySolution } from '../services/api';
+import { createDailySolution, fetchDailySolution } from '../services/dailySolutions';
 
 type Solution = { id: number; word: string; description: string };
 

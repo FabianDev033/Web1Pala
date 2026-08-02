@@ -1,46 +1,187 @@
-# La pala del día
+# La Palabra del Día
 
-Juego React/Vite con una API Node + Express para registrar usuarios y conservar sus estadísticas en MySQL.
+Una aplicación web inspirada en juegos de palabras diarios como Wordle, desarrollada como proyecto universitario utilizando una arquitectura Full Stack.
 
-## Puesta en marcha
+El objetivo del proyecto es ofrecer una experiencia simple e intuitiva donde los usuarios pueden resolver una palabra diaria, mantener una sesión persistente y consultar sus estadísticas personales.
 
-1. Copiá `.env.example` a `.env` y completá la contraseña de MySQL y un `JWT_SECRET` largo y aleatorio.
-2. Creá las tablas nuevas con `mysql -u root -p < server/database/schema.sql`.
-3. En una terminal ejecutá `pnpm dev:api` y en otra `pnpm dev`.
+> **Nota:** Este proyecto corresponde a una versión adaptada para presentación académica. La versión pública mantiene elementos visuales y de humor que fueron reemplazados temporalmente por una interfaz más formal.
 
-La base indicada en `boludez.sql` no admite hashes bcrypt ni distribuciones de intentos: usá `server/database/schema.sql` para crear el esquema actualizado. Si ya cargaste ese dump, recreá esa base antes de importar el nuevo esquema.
+---
 
-## Endpoints
+## ✨ Características
 
-Todas las rutas reciben y responden JSON. Las rutas de estadísticas requieren el encabezado `Authorization: Bearer <token>` y sólo permiten acceder al usuario incluido en ese token.
+* Registro e inicio de sesión de usuarios.
+* Autenticación mediante **JWT**.
+* Persistencia de sesión utilizando **Cookies HTTP**.
+* Sincronización automática de estadísticas entre cliente y servidor.
+* Estadísticas personales por usuario.
+* Diseño completamente responsive.
+* Arquitectura Frontend + Backend desacoplada.
+* API REST propia.
+* Base de datos relacional utilizando MySQL.
 
-| Método | Ruta | Cuerpo / resultado |
-| --- | --- | --- |
-| `GET` | `/api/health` | Comprueba conexión con MySQL. |
-| `POST` | `/api/auth/register` | `{ "username", "password" }`; crea el usuario, genera su hash y devuelve `{ user, token }`. |
-| `POST` | `/api/auth/login` | `{ "username", "password" }`; devuelve `{ user, token }`. |
-| `GET` | `/api/users/:userId/stats?mode=normal` | Devuelve las estadísticas del usuario y modo (`normal`, `hard` o `easy`). |
-| `PUT` | `/api/users/:userId/stats` | Guarda el estado completo de un modo; inserta o actualiza el registro. |
-| `GET` | `/api/daily-solutions?date=YYYY-MM-DD` | Devuelve las soluciones de la fecha si ya fueron generadas. |
-| `POST` | `/api/daily-solutions` | Guarda las soluciones iniciales de la fecha y devuelve la definitiva. |
+---
 
-Ejemplo del cuerpo del `PUT`:
+## 🛠 Tecnologías utilizadas
 
-```json
-{
-  "gameMode": "normal",
-  "stats": {
-    "played": 8,
-    "wins": 5,
-    "currentStreak": 2,
-    "bestStreak": 3,
-    "distribution": [0, 1, 2, 1, 1, 0]
-  }
-}
+### Frontend
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* React Router DOM
+* Axios
+
+### Backend
+
+* Node.js
+* Express
+* Sequelize
+* MySQL
+* JWT (JSON Web Tokens)
+* bcrypt
+
+---
+
+## 📂 Estructura del proyecto
+
+```text
+├── client
+│   ├── components
+│   ├── pages
+│   ├── contexts
+│   ├── services
+│   ├── utils
+│   └── assets
+│
+└── api
+    ├── controllers
+    ├── routes
+    ├── middleware
+    ├── models
+    ├── services
+    └── config
 ```
 
-## Integración del cliente
+---
 
-`src/services/api.ts` expone `register(username, password)` y `login(username, password)`. Ambas guardan el token y el usuario en `localStorage` mediante `src/utils/auth.ts`; conectalas a los campos de registro/inicio de sesión de la interfaz cuando los agregues.
+## 🔐 Autenticación
 
-Al existir esa sesión, `useStats` trae las estadísticas de la base al cargar cada modo y ejecuta el `PUT` automáticamente después de una victoria o derrota. Sin sesión o sin API disponible mantiene el comportamiento local actual.
+La aplicación implementa un sistema de autenticación basado en **JSON Web Tokens (JWT)**.
+
+El flujo de autenticación es el siguiente:
+
+1. El usuario inicia sesión.
+2. El servidor valida las credenciales.
+3. Se genera un JWT firmado.
+4. El token se almacena en una Cookie HTTP.
+5. Cada solicitud protegida verifica automáticamente la validez del token.
+6. Si el token continúa siendo válido, la sesión permanece iniciada.
+
+Este mecanismo permite mantener la sesión del usuario incluso después de recargar la página.
+
+---
+
+## 📊 Sistema de estadísticas
+
+Cada usuario posee un conjunto de estadísticas personales almacenadas en la base de datos.
+
+Entre ellas se registran datos como:
+
+* Partidas jugadas.
+* Victorias.
+* Derrotas.
+* Racha actual.
+* Mejor racha.
+
+Las estadísticas se sincronizan automáticamente entre el cliente y el servidor para mantener la información consistente independientemente del dispositivo utilizado.
+
+---
+
+## 📱 Diseño Responsive
+
+Toda la interfaz fue diseñada utilizando Tailwind CSS con un enfoque **Mobile First**, permitiendo una correcta visualización tanto en dispositivos móviles como en computadoras.
+
+---
+
+## ⚙️ Instalación
+
+### Clonar el repositorio
+
+```bash
+git clone https://github.com/usuario/proyecto.git
+```
+
+### Frontend
+
+```bash
+cd client
+npm install
+npm run dev
+```
+
+### Backend
+
+```bash
+cd api
+npm install
+npm run dev
+```
+
+---
+
+## Variables de entorno
+
+### Frontend
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+### Backend
+
+```env
+PORT=3000
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=nombre_db
+DB_USER=root
+DB_PASSWORD=password
+
+JWT_SECRET=tu_clave_secreta
+```
+
+---
+
+## Objetivos del proyecto
+
+Este proyecto fue desarrollado con el propósito de aplicar conceptos de desarrollo Full Stack, incluyendo:
+
+* Desarrollo de APIs REST.
+* Arquitectura Cliente - Servidor.
+* Manejo de autenticación segura.
+* Persistencia de sesiones.
+* Diseño responsive.
+* Comunicación entre frontend y backend.
+* Manejo de bases de datos relacionales.
+* Organización modular del código.
+
+---
+
+## Mejoras futuras
+
+* Ranking global de jugadores.
+* Recuperación de contraseña.
+* Panel de administración.
+* Modo multijugador.
+* Desafíos entre usuarios.
+* Estadísticas globales.
+* Internacionalización.
+
+---
+
+## Autor
+
+Desarrollado por **Fabián Barzola** como proyecto universitario utilizando React, TypeScript, Node.js, Express y MySQL.
